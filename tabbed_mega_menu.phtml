@@ -1,0 +1,238 @@
+<!--<link href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>-->
+<style type="text/css" media="screen">
+ .nav.nav-pills.nav-stacked li {
+  
+  font-size: 15px;
+  margin-left: -23px;
+  height: 48px;
+  text-align: left;
+  width: 243px;
+  line-height: 51px;
+}
+
+
+.tab-pane > p {
+  width: 254px;
+  padding: 13px;
+  font-size: 20px;
+  background-color: white;
+ 
+}
+.tab-content {
+	/*background: white !important;*/
+	width: 80%;
+  background: lightblue !important;
+	/*height: 554px !important;*/
+	/*float: right;*/
+	/*margin-top: -23px;*/
+	/*margin-right: 13%;*/
+}
+.tab-content.well{
+  margin-bottom: 4px !important;
+}
+.nav.nav-pills.nav-stacked a {
+  padding-left: 165px !important;
+  color: #fff;
+}
+/*.nav.nav-pills.nav-stacked a:hover {
+  color: blue;
+  padding-left: 15px;
+}*/
+.nav.nav-pills.nav-stacked li:hover {
+  background-color: #fff;
+}
+table tr{
+  float: left;
+}
+.table p {
+  font-size: 17px;
+  padding: 5px;
+}
+/*.category-image > img {
+  width: 424px;
+}*/
+.custbrand img {
+  border-left: medium none white;
+  float: right;
+  padding: 11px;
+  width: 145px;
+}
+.nav.nav-pills.nav-stacked {
+  /*width: 13.6666%;*/
+  width: 14.6667%;
+}
+.nav.nav-pills.nav-stacked a {
+  /*margin-left: 87px !important;*/
+  padding: 12px;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+  background-color: #fff !important;
+  color: blue !important;
+}
+.nav.nav-pills.nav-stacked > li.active {
+  background-color: #fff !important;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: #fff !important;
+  text-decoration: none;
+}
+.icon-item-menu {
+    float: left;
+   margin-top: -27px !important;
+   margin-left: -35px !important;
+}
+.table a:hover {
+  color: blue;
+}
+.icon-item-menu > img {
+  margin-top: 20px;
+}
+@-moz-document url-prefix() {
+  /*.tab-content {
+    width: 79% !important;
+  }*/
+  .nav.nav-pills.nav-stacked a {
+ padding-left: 165px !important;
+}
+.nav.nav-pills.nav-stacked a:before{
+  padding-left: 165px !important;
+}
+}
+
+}
+@media screen and (-webkit-min-device-pixel-ratio:0){
+/*.sm_megamenu_dropdown_1column {
+    margin-right: -749px !important;
+    margin-left: 88px !important;
+    left: -163px !important;
+}*/
+a.item {
+    padding-left: 165px !important;
+}
+a.item:before{
+   padding-left: 165px !important;
+}
+ul.nav.nav-pills.nav-stacked li {
+    width: 355px !important;
+}
+}
+.sm_megamenu_title {
+  display: none;
+}
+
+.tab-content.well {
+  margin-left: 20px !important;
+}
+.colchang,.colchang:hover {
+  /*float: left;
+  margin-left: 15px;*/
+  margin-left: -152px;
+    position: absolute;
+}
+#search {
+  font-size: 19px;
+}
+/*@media and (-webkit-min-device-pixel-ratio:0) {
+  .nav.nav-pills.nav-stacked li{
+    width: 348px !important;
+  }
+}*/
+</style>
+
+
+<?php 
+$_helper = Mage::helper('catalog/category');
+$_categories = $_helper->getStoreCategories();
+//$_helper   = $this->helper('catalog/output');
+$catcurrId = $this->getData('category_id');
+if (count($_categories) > 0){
+    
+foreach($_categories as $_category){
+$_category = Mage::getModel('catalog/category')->load($_category->getId());
+$_subcategories = $_category->getChildrenCategories();
+if (count($_subcategories) > 0){
+           $_category->getName();
+          $catID = $_category->getId();
+           if($catcurrId == $catID){?>
+
+
+<div class="container">
+<!-- Nav pills -->
+<ul class="nav nav-pills nav-stacked col-md-2">
+    <?php  foreach($_subcategories as $_subcategory){?>
+  <li class="<?php if(($_subcategory->getId()== 161)||($_subcategory->getId()== 250)){echo ' active';}?>"><a href="<?php echo "#tab_a".$_subcategory->getId(); ?>" data-toggle="tab" class="item"><span class="colchang"><?php  echo $_subcategory->getName(); ?></span></a></li><br>
+  <?php } ?>
+  <!--<li><a href="#tab-2" data-toggle="tab">Tab 2</a></li><br>-->
+  <!--<li><a href="#tab-3" data-toggle="tab">Tab 3</a></li><br>-->
+  <!--<li><a href="#tab-4" data-toggle="tab">Tab 4</a></li><br>-->
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content well col-md-10">
+    <?php 
+
+
+              foreach($_subcategories as $_subcategory){
+                
+                     $subcatid = $_subcategory->getId();
+                     $subcaturl = $_subcategory->getUrl();
+                     
+                     $children = Mage::getModel('catalog/category')->getCategories($subcatid);
+                     $imageurl=Mage::getModel('catalog/category')->load($subcatid)->getData('tabbed_image');
+                     $brandimages = Mage::getModel('catalog/category')->load($subcatid)->getData('brand_menu_images');
+                     $subcatimageurl = Mage::getBaseUrl()."media/catalog/category/".$imageurl;
+                     // echo "<pre>";
+                     // print_r($subcatid);
+
+                ?>
+  <div class="tab-pane <?php if(($subcatid== 161)||($subcatid== 250)){echo ' active';}?>" id="<?php  echo "tab_a".$_subcategory->getId(); ?>">
+      
+       <div class="col-md-12">
+                       <table class="table">
+                         <tbody>
+                           <tr>
+                             <td>
+                      <?php foreach ($children as $category) {?>
+
+                       <p><a href="<?php echo $category->getRequestPath(); ?>"><?php echo $category->getName();?></a></p>
+
+                           <?php }?>
+                          </td>
+                           </tr>
+                           <tr><td>
+                               <?php // $_subcategory; ?>
+                               <?php //echo $imageurl."<br/>".$subcaturl."<br/>".$subcatimageurl;?>
+
+                <p class="category-image"><img src="<?php echo $subcatimageurl ;?>" alt="<?php echo $this->htmlEscape($_subcategory->getName());?>" title="<?php echo $this->htmlEscape($_category->getName());?>" /></p>
+</td></tr>
+<tr><td><span class="custbrand"><?php echo $brandimages;?><span></td></tr>
+                            
+                          
+                         </tbody>
+                       </table>
+                         
+                       </div>
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      </div>
+  <!--<div class="tab-pane" id="tab-2">Content 2</div>-->
+  <!--<div class="tab-pane" id="tab-3">Content 3</div>-->
+  <!--<div class="tab-pane" id="tab-4">Content 4</div>-->
+  <?php }?>
+</div>
+<?php     }
+           }
+        }
+
+    } 
+
+?>
+</div>
